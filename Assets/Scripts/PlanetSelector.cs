@@ -7,7 +7,7 @@ public class PlanetSelector : MonoBehaviour
     public Sprite[] planetSprites;
     public Transform[] planetTransforms;
 
-    private int currentIndex = 0;
+    private int currentIndex = 4;
 
     void Start()
     {
