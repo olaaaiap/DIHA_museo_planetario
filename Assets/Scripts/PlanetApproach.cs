@@ -9,20 +9,12 @@ public class PlanetApproach : MonoBehaviour
     private Transform planetaElegido;
     private Vector3 posicionOriginal;
 
-    public Transform cameraTransform;  // La cámara (XR Origin)
+    public Transform objetivoTransform;  // Objetico (gameObject vacio)
     public float velocidad = 1f;  // Velocidad de acercamiento
     public float velocidadRegreso = 3f;  // Velocidad de acercamiento
     public float distanciaDeAcercamiento = 10f;  // Distancia a la que el planeta se acerca
     public AudioSource audioSource;  // Componente de AudioSource para el planeta
 
-    void Start()
-    {
-        // Si no se asigna manualmente, busca la cámara en el XR Origin
-        if (cameraTransform == null)
-        {
-            cameraTransform = FindFirstObjectByType<XROrigin>().transform.GetChild(0);  // Asume que la cámara está como primer hijo del XR Origin
-        }
-    }
 
     void Update()
     {
@@ -57,7 +49,7 @@ public class PlanetApproach : MonoBehaviour
     {
 
         Debug.Log("AcercarPlaneta");
-        Vector3 objetivo = cameraTransform.position + new Vector3(0, 8, -distanciaDeAcercamiento);  // Establece la posición objetivo cerca de la cámara
+        Vector3 objetivo = objetivoTransform.position + new Vector3(0, 8, -distanciaDeAcercamiento);  // Establece la posición objetivo cerca de la cámara
 
         // Mueve el planeta suavemente hacia la cámara
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, objetivo, velocidad * Time.deltaTime);
