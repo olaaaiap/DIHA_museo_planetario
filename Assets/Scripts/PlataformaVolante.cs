@@ -1,38 +1,30 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlataformaVolante : MonoBehaviour
+public class PlataformaVolante: MonoBehaviour
 {
-    [Header("Velocidad de vuelo")]
-    public float velocidad = 2f;
+    public Transform destinoMercurio; // Lugar donde quieres que vaya el usuario
+    public Transform player; // Lugar donde quieres que vaya el usuario
+    public float alturaUsuario = 1f; // Altura del usuario para que no quede bajo la plataforma
 
-    [Header("Input Actions")]
-    public InputActionProperty moveAction; // joystick principal
-    public InputActionProperty ascendAction; // opcional: subir/bajar
-
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        // Leer joystick
-        Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-        // Movimiento relativo a la cámara
-        Vector3 forward = Camera.main.transform.forward;
-        Vector3 right = Camera.main.transform.right;
-        forward.y = 0;
-        right.y = 0;
-        forward.Normalize();
-        right.Normalize();
-
-        Vector3 movimiento = forward * input.y + right * input.x;
-
-        // Subida/bajada opcional
-        if (ascendAction != null)
+        if (other.CompareTag("Player")) // Asegúrate de que tu VR rig tenga el tag "Player"
         {
-            float ascend = ascendAction.action.ReadValue<float>();
-            movimiento += Vector3.up * ascend;
+            StartCoroutine(MoverUsuario(player));
         }
+    }
 
-        // Mover la plataforma
-        transform.position += movimiento * velocidad * Time.deltaTime;
+    private System.Collections.IEnumerator MoverUsuario(Transform player)
+    {
+        // Guardamos la posición inicial
+        CharacterController cc = player.GetComponent<CharacterController>();
+        Vector3 startPos = player.position;
+        Vector3 endPos = destinoMercurio.position + Vector3.up * alturaUsuario;
+        Debug.Log(destinoMercurio.position);
+        Debug.Log(endPos);
+        yield return null;
+        cc.enabled = false; // desactivar temporalmente para mover manualmente
+        player.position = endPos;
+        cc.enabled = true; // volver a activar
     }
 }

@@ -7,7 +7,7 @@ public class PlanetSelector : MonoBehaviour
     public Sprite[] planetSprites;
     public Transform[] planetTransforms;
 
-    private int currentIndex = 4;
+    private int currentIndex = 0;
 
     void Start()
     {
@@ -39,20 +39,26 @@ public class PlanetSelector : MonoBehaviour
 
     public void AcceptPlanet()
     {
-        Debug.Log("Planeta elegido: " + currentIndex);
-        Debug.Log("Planeta elegido POSICION: " + planetTransforms[currentIndex].position);
-        // Aquí luego instancias el planeta 3D
-        PlanetApproach planetApproach = FindFirstObjectByType<PlanetApproach>();
+
+        PlanetApproach planetApproach = planetTransforms[currentIndex].GetComponent<PlanetApproach>();
+
+
         if (planetApproach != null)
         {
-            foreach(Transform pt in planetTransforms)
+            Debug.Log(planetTransforms[currentIndex]);
+            foreach (Transform pt in planetTransforms)
             {
-                if(pt != planetTransforms[currentIndex])
+                if (pt != planetTransforms[currentIndex])
                 {
                     pt.gameObject.SetActive(false);
                 }
+                else
+                {
+                    pt.gameObject.SetActive(true);
+                }
             }
             planetApproach.ComenzarAcercamiento(planetTransforms[currentIndex]);
+
         }
     }
 

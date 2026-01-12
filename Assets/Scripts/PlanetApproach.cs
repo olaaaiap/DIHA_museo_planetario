@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlanetApproach : MonoBehaviour
 {
     private bool acercando = false;
+    private bool planetaEnPosicion = false;
     private bool regresando = false;
     private Transform planetaElegido;
     private Vector3 posicionOriginal;
@@ -14,6 +15,7 @@ public class PlanetApproach : MonoBehaviour
     public float velocidadRegreso = 3f;  // Velocidad de acercamiento
     public float distanciaDeAcercamiento = 10f;  // Distancia a la que el planeta se acerca
     public AudioSource audioSource;  // Componente de AudioSource para el planeta
+    public Animator planetAnimator;
 
 
     void Update()
@@ -29,40 +31,42 @@ public class PlanetApproach : MonoBehaviour
         }
 
         // Si el audio ha terminado, comienza el regreso
-        if (audioSource != null && !audioSource.isPlaying && acercando)
+        if (audioSource != null && !audioSource.isPlaying && (planetaEnPosicion||acercando))
         {
-            regresando = true;
+            ComenzarRegreso();
         }
     }
 
     public void ComenzarAcercamiento(Transform planetaSeleccionado)
     {
+        if (audioSource.isPlaying) {
+            return;
+        }
+
         planetaElegido = planetaSeleccionado;
-        posicionOriginal = planetaElegido.position;  // Guarda la posición original del planeta
-        Debug.Log(posicionOriginal);
-        acercando = true;  // Comienza el acercamiento
-        regresando = false;  // Asegúrate de que no esté regresando
+        posicionOriginal = planetaElegido.position;  
+        
+        acercando = true;  
+        regresando = false;  
+
+        //Reproducir audio
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+        planetAnimator.enabled = true;
+        planetAnimator.Play("planetRotation");
     }
 
-    // Mueve la cámara o el planeta seleccionado hacia el centro
     private void AcercarPlaneta()
     {
-
-        Debug.Log("AcercarPlaneta");
         Vector3 objetivo = objetivoTransform.position + new Vector3(0, 8, -distanciaDeAcercamiento);  // Establece la posición objetivo cerca de la cámara
 
-        // Mueve el planeta suavemente hacia la cámara
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, objetivo, velocidad * Time.deltaTime);
-
-        // Si el planeta está suficientemente cerca de la cámara, para el movimiento
-        if (Vector3.Distance(planetaElegido.position, objetivo) < 0.1f)
-        {
-            acercando = false;
-        }
     }
 
     public void RegresarPlaneta()
-    {   
+    {
         acercando = false;
         // Mueve el planeta de vuelta a su posición original de forma suave con Lerp
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, posicionOriginal, velocidadRegreso * Time.deltaTime);
@@ -76,13 +80,16 @@ public class PlanetApproach : MonoBehaviour
             Debug.Log("Regresando false");
             planetaElegido.position = posicionOriginal;  // Asegura que llega exactamente
             regresando = false;
-
+            audioSource.Stop();
+            planetAnimator.enabled = false;
             PlanetSelector planetSelector = FindFirstObjectByType<PlanetSelector>();
             planetSelector.ActivarTodos();
+
         }
     }
     public void ComenzarRegreso()
     {
+        planetaEnPosicion = false;
         regresando = true;  // Comienza el regreso
         acercando = false;  // Asegúrate de que no esté acercando
     }
