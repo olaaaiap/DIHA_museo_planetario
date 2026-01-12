@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/OlaiaScene.unity
     guid: 11d54919ff206924a848b7b44fb7c6b0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FlyingScene.unity
     guid: 0418305e44ea1534fb229ee17a497dfd
   - enabled: 0

@@ -12,7 +12,6 @@ public class PlanetApproach : MonoBehaviour
 
     public Transform objetivoTransform;  // Objetico (gameObject vacio)
     public float velocidad = 1f;  // Velocidad de acercamiento
-    public float velocidadRegreso = 3f;  // Velocidad de acercamiento
     public float distanciaDeAcercamiento = 10f;  // Distancia a la que el planeta se acerca
     public AudioSource audioSource;  // Componente de AudioSource para el planeta
     public Animator planetAnimator;
@@ -69,7 +68,7 @@ public class PlanetApproach : MonoBehaviour
     {
         acercando = false;
         // Mueve el planeta de vuelta a su posición original de forma suave con Lerp
-        planetaElegido.position = Vector3.Lerp(planetaElegido.position, posicionOriginal, velocidadRegreso * Time.deltaTime);
+        planetaElegido.position = Vector3.Lerp(planetaElegido.position, posicionOriginal, velocidad * Time.deltaTime);
 
         Debug.Log("Vector3.Distance(planetaElegido.position, posicionOriginal)");
         Debug.Log(Vector3.Distance(planetaElegido.position, posicionOriginal));
