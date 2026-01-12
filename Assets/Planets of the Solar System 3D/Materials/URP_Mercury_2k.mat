@@ -116,6 +116,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
+    - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
     - Color_B354DC38: {r: 0.7924528, g: 0.70627004, b: 0.42239228, a: 0}
