@@ -16,11 +16,6 @@ public class XRButtonSound : MonoBehaviour
             {
                 audioSource.Stop();
                 mercurioAnimator.enabled = false;
-                PlanetSelector planetSelector = FindFirstObjectByType<PlanetSelector>();
-                if (planetSelector != null)
-                {
-                    planetSelector.FinishExplanation();
-                }
             }
             else
             {

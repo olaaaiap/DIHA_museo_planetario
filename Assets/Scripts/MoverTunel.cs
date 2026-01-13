@@ -2,12 +2,11 @@ using UnityEngine;
 
 public class MoverTunel : MonoBehaviour
 {
-
-    public float velocidad = 50f; // unidades por segundo
+    [SerializeField] private float velocidad = 50f; //Velocidad del movimiento del tunel
 
     void Update()
     {
-        // mover el túnel hacia la nave en X negativo
+        //Mover el tunel hacia x positivo
         transform.Translate(Vector3.right * velocidad * Time.deltaTime, Space.World);
     }
 }

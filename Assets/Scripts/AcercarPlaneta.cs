@@ -2,6 +2,7 @@
 using Unity.XR.CoreUtils;
 using UnityEngine;
 
+
 public class PlanetApproach : MonoBehaviour
 {
     private bool acercando = false;
@@ -25,7 +26,6 @@ public class PlanetApproach : MonoBehaviour
         }
         else if (regresando)
         {
-            Debug.Log("Regresando UPDATE");
             RegresarPlaneta();
         }
 
@@ -69,9 +69,6 @@ public class PlanetApproach : MonoBehaviour
         acercando = false;
         // Mueve el planeta de vuelta a su posición original de forma suave con Lerp
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, posicionOriginal, velocidad * Time.deltaTime);
-
-        Debug.Log("Vector3.Distance(planetaElegido.position, posicionOriginal)");
-        Debug.Log(Vector3.Distance(planetaElegido.position, posicionOriginal));
 
         // Si el planeta ha vuelto a su posición original, detén el movimiento
         if (Vector3.Distance(planetaElegido.position, posicionOriginal) < 2) // Un umbral más pequeño para evitar que no llegue nunca
