@@ -3,26 +3,29 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 
 
-public class PlanetApproach : MonoBehaviour
+public class AcercarPlaneta : MonoBehaviour
 {
-    private bool acercando = false;
-    private bool planetaEnPosicion = false;
-    private bool regresando = false;
-    private Transform planetaElegido;
-    private Vector3 posicionOriginal;
+    [SerializeField] private Transform objetivoTransform;  //Objetivo a donde el planeta seleccionado se acercará
+    [SerializeField] private float velocidad = 1f;  //Velocidad en el que el planeta se acercará
+    [SerializeField] private float distanciaDeAcercamiento = 10f;  //Distancia (eje Z) desde el objetivo donde se quedará el planeta 
+    [SerializeField] private AudioSource audioSource;  //Audio source que reproducirá la explicación del planeta seleccionado
+    [SerializeField] private Animator planetAnimator; //Animación de rotación (en su propio eje) del planeta seleccionado
 
-    public Transform objetivoTransform;  // Objetico (gameObject vacio)
-    public float velocidad = 1f;  // Velocidad de acercamiento
-    public float distanciaDeAcercamiento = 10f;  // Distancia a la que el planeta se acerca
-    public AudioSource audioSource;  // Componente de AudioSource para el planeta
-    public Animator planetAnimator;
+
+    private bool acercando = false; //Variable para controlar si el planeta se está acercando
+    private bool planetaEnPosicion = false; //Variable para controlar si el planeta está en la posición objetivo
+    private bool regresando = false; //Variable para controlar si el planeta está regresando a su posición original
+    private Transform planetaElegido; //Transform del planeta seleccionado
+    private Vector3 posicionOriginal; //Posición original del planeta seleccionado
+
+    
 
 
     void Update()
     {
         if (acercando)
         {
-            AcercarPlaneta();
+            AcercarPlanetaMovimiento();
         }
         else if (regresando)
         {
@@ -36,8 +39,10 @@ public class PlanetApproach : MonoBehaviour
         }
     }
 
+    //Función que comenzará el acercamiento del planeta al objetivo (audio y animación)
     public void ComenzarAcercamiento(Transform planetaSeleccionado)
     {
+        //Si se llama a esta función mientras el audio se está reproduciendo, no hacer nada
         if (audioSource.isPlaying) {
             return;
         }
@@ -48,46 +53,51 @@ public class PlanetApproach : MonoBehaviour
         acercando = true;  
         regresando = false;  
 
-        //Reproducir audio
+        //Reproducir audio de la explicación
         if (audioSource != null)
         {
             audioSource.Play();
         }
+
+        //Empezar animación de rotación
         planetAnimator.enabled = true;
         planetAnimator.Play("planetRotation");
     }
 
-    private void AcercarPlaneta()
+    //Función que hará el movimiento del acercamiento
+    private void AcercarPlanetaMovimiento()
     {
-        Vector3 objetivo = objetivoTransform.position + new Vector3(0, 8, -distanciaDeAcercamiento);  // Establece la posición objetivo cerca de la cámara
-
+        //Posicionar el planeta cerca del objetivo, usando Lerp para un movimiento suave
+        Vector3 objetivo = objetivoTransform.position + new Vector3(0, 8, -distanciaDeAcercamiento);
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, objetivo, velocidad * Time.deltaTime);
     }
 
+    //Función que hará el movimiento de regreso
     public void RegresarPlaneta()
     {
         acercando = false;
-        // Mueve el planeta de vuelta a su posición original de forma suave con Lerp
+        //Mover el planeta en su posición inicial usando Lerp para un movimiento suave
         planetaElegido.position = Vector3.Lerp(planetaElegido.position, posicionOriginal, velocidad * Time.deltaTime);
 
-        // Si el planeta ha vuelto a su posición original, detén el movimiento
+        //Si el planeta ha vuelto a su posición inicial, detener el  regreso y activar los demás planetas
         if (Vector3.Distance(planetaElegido.position, posicionOriginal) < 2) // Un umbral más pequeño para evitar que no llegue nunca
         {
-            Debug.Log("Regresando false");
-            planetaElegido.position = posicionOriginal;  // Asegura que llega exactamente
+            planetaElegido.position = posicionOriginal;
             regresando = false;
             audioSource.Stop();
             planetAnimator.enabled = false;
-            PlanetSelector planetSelector = FindFirstObjectByType<PlanetSelector>();
-            planetSelector.ActivarTodos();
+            SeleccionarPlaneta seleccionarPlaneta = FindFirstObjectByType<SeleccionarPlaneta>();
+            seleccionarPlaneta.ActivarTodos();
 
         }
     }
+
+    //Función que actualiza las variables privadas para que empiece el regreso
     public void ComenzarRegreso()
     {
         planetaEnPosicion = false;
-        regresando = true;  // Comienza el regreso
-        acercando = false;  // Asegúrate de que no esté acercando
+        regresando = true;
+        acercando = false;
     }
 
 }

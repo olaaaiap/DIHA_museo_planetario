@@ -19,10 +19,10 @@ public class XRButtonSound : MonoBehaviour
             }
             else
             {
-                PlanetSelector planetSelector = FindFirstObjectByType<PlanetSelector>();
-                if (planetSelector != null)
+                SeleccionarPlaneta seleccionarPlaneta = FindFirstObjectByType<SeleccionarPlaneta>();
+                if (seleccionarPlaneta != null)
                 {
-                    planetSelector.AcceptPlanet();
+                    seleccionarPlaneta.AcceptPlanet();
                 }
                 audioSource.Play();
                 mercurioAnimator.enabled = true;

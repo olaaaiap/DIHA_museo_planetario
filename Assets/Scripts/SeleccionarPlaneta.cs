@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlanetSelector : MonoBehaviour
+public class SeleccionarPlaneta : MonoBehaviour
 {
     [SerializeField] private Image imagenUIPlaneta; //Componente de imagen UI donde se enseñará el planeta seleccionado
     [SerializeField] private Sprite[] listaSpritesPlanetas; //Lista de sprites de los planetas
@@ -44,10 +44,10 @@ public class PlanetSelector : MonoBehaviour
     public void AcceptPlanet()
     {
         //Obtener el script de PlanetApproach del planeta que se ha seleccionado
-        PlanetApproach planetApproach = listaTransformsPlanetas[currentIndex].GetComponent<PlanetApproach>();
+        AcercarPlaneta acercarPlaneta = listaTransformsPlanetas[currentIndex].GetComponent<AcercarPlaneta>();
 
         //Null check (comprobar que el objeto tenga el componente asignado)
-        if (planetApproach != null)
+        if (acercarPlaneta != null)
         {
             //Desactivar todos los planetas excepto el seleccionado
             foreach (Transform pt in listaTransformsPlanetas)
@@ -62,7 +62,7 @@ public class PlanetSelector : MonoBehaviour
                 }
             }
             //Acercar planeta seleccionado
-            planetApproach.ComenzarAcercamiento(listaTransformsPlanetas[currentIndex]);
+            acercarPlaneta.ComenzarAcercamiento(listaTransformsPlanetas[currentIndex]);
 
         }
     }
