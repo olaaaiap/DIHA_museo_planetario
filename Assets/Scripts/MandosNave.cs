@@ -15,7 +15,7 @@ public class MandosNave : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        FindAnyObjectByType<SceneLoaderManager>().SceneToLoad = sceneName;
+        SceneLoaderManager.Instance.SceneToLoad = sceneName;
 
         StartCoroutine(ShipScreen());
     }
