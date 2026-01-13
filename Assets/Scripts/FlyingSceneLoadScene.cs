@@ -16,6 +16,6 @@ public class FlyingSceneLoadScene : MonoBehaviour
 
         yield return new WaitForSeconds(4);
 
-        SceneManager.LoadScene(FindAnyObjectByType<SceneLoaderManager>().SceneToLoad);
+        SceneManager.LoadScene(SceneLoaderManager.Instance.SceneToLoad);
     }
 }
