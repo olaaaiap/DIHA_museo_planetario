@@ -10,11 +10,13 @@ public class MandosNave : MonoBehaviour
 
     private void Start()
     {
-        shipText.text = "SELECCIONA TU DESTINO";
+        //shipText.text = "SELECCIONA TU DESTINO";
     }
 
     public void LoadScene(string sceneName)
     {
+        if (SceneManager.GetActiveScene().name == sceneName) return;
+
         SceneLoaderManager.Instance.SceneToLoad = sceneName;
 
         StartCoroutine(ShipScreen());
